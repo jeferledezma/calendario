@@ -10,7 +10,7 @@
 
 <div class="header">
     <h1 id="date-title">HÁBITOS - ACTIVIDADES</h1>
-    <a href="index.html" class="back-to-calendar">Volver al calendario</a>
+    <a href="index.html" class="back-to-calendar">Volver a calendario</a>
 </div>
 
 <div class="progress-container">
@@ -18,7 +18,7 @@
 </div>
 
 <div class="add-activity">
-    <a id="add-schedule-btn" class="button">Añadir Todo un Dia de Actividades</a>
+    <a id="add-schedule-btn" class="button">Añadir Dia de Actividades </a>
    
 
 
@@ -47,7 +47,7 @@
 
     const dayOfWeekEnglish = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date(currentYear, currentMonth - 1, day));
     const dayOfWeekSpanish = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(new Date(currentYear, currentMonth - 1, day));
-    document.getElementById('date-title').innerHTML = `Day: ${dayOfWeekEnglish} (${dayOfWeekSpanish}) - ${day}/${currentMonth}/${currentYear}`;
+    document.getElementById('date-title').innerHTML = `Day: ${dayOfWeekEnglish} (${dayOfWeekSpanish}) ${day}/${currentMonth}/${currentYear}`;
 
     document.getElementById('add-schedule-btn').href = `horario.html?day=${dayKey}`;
 
