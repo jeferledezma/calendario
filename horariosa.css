@@ -35,8 +35,9 @@ form {
   color: white;
 }
 .back-to-activities{
+        text-decoration: none;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, 'Times New Roman', Times, serif;
-    font-size: 1rem;
+    font-size: 1.5rem;
    border-radius: 5px;
     padding: 10px;
     padding-left: 90px;
