@@ -14,7 +14,7 @@ body {
     color: white;
     text-align: center;
   padding: 1rem;
-    
+    margin-bottom: 5px;
 }
 
 #date-title {
@@ -33,7 +33,7 @@ font-size:1rem;
 padding-left: 56px;
 padding-right: 56px;
 border-radius: 5px;
-margin-bottom: 10px;
+margin-bottom: 20px;
 }
 
 .progress-container {
