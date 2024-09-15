@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Añadir Horario</title>
+    <link rel="stylesheet" href="horariosa.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>NUEVO HORARIO</h1>
+    <a href="index.html" class="back-to-activities">Volver a Calendario</a>
+</div>
+
+<form id="schedule-form">
+    <div id="schedule-inputs"></div>
+  <center>  <button type="button" onclick="addSchedule()">AGREGAR TODO EL HORARIO</button></center>
+    <p>El poder de los hábitos radica en su capacidad para dar forma a nuestra vida de forma inconsciente</p>
+
+</form>
+
+<div class="add-activity-container"><br>
+    <a>Agrega mas Actividades</a><br><br>
+    <input type="time" id="new-time-input" value="00:00">
+    <input type="text" id="new-activity-input" placeholder="Agregar Actividades">
+    <button type="button" id="add-activity-button">AGREGAR ACTIVIDAD</button>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const dayKey = urlParams.get('day');
+
+    const scheduleInputsContainer = document.getElementById('schedule-inputs');
+    const addActivityButton = document.getElementById('add-activity-button');
+    const newTimeInput = document.getElementById('new-time-input');
+    const newActivityInput = document.getElementById('new-activity-input');
+
+    // Actividades predeterminadas
+    const defaultActivities = [
+        { time: '07:00', activityText: 'Desayunar' },
+        { time: '12:00', activityText: 'Almorzar' },
+        { time: '20:00', activityText: 'Cenar' },
+        { time: '21:00', activityText: 'Leer' },
+        { time: '22:00', activityText: 'Descansar' }
+    ];
+
+    // Función para agregar un input de actividad con hora y texto modificables
+    function addActivityInput(time = '', activityText = '') {
+        const container = document.createElement('div');
+        container.className = 'activity-entry';
+
+        const timeInput = document.createElement('input');
+        timeInput.type = 'time';
+        timeInput.value = time || '00:00';
+
+        const activityInput = document.createElement('input');
+        activityInput.type = 'text';
+        activityInput.placeholder = 'No Existe actividad';
+        activityInput.value = activityText;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.textContent = 'Eliminar';
+        deleteButton.onclick = () => container.remove();
+
+        container.appendChild(timeInput);
+        container.appendChild(activityInput);
+        container.appendChild(deleteButton);
+
+        scheduleInputsContainer.appendChild(container);
+    }
+
+    // Función para generar el horario de 05:00 a 24:00
+    function generateFullDaySchedule() {
+        for (let hour = 5; hour <= 23; hour++) {
+            const timeString = hour.toString().padStart(2, '0') + ':00';
+            const defaultActivity = defaultActivities.find(activity => activity.time === timeString);
+            if (defaultActivity) {
+                addActivityInput(defaultActivity.time, defaultActivity.activityText);
+            } else {
+                addActivityInput(timeString);
+            }
+        }
+    }
+
+    // Función para agregar el horario
+    function addSchedule() {
+        // Recopilamos todas las actividades del formulario
+        const activities = JSON.parse(localStorage.getItem(dayKey)) || [];
+
+        const activityEntries = document.querySelectorAll('.activity-entry');
+        activityEntries.forEach(entry => {
+            const time = entry.querySelector('input[type="time"]').value;
+            const activityText = entry.querySelector('input[type="text"]').value;
+            if (time && activityText) {
+                activities.push({ time, activityText, note: '', completed: false });
+            }
+        });
+
+        // Guardamos las actividades en el localStorage
+        localStorage.setItem(dayKey, JSON.stringify(activities));
+
+        // Confirmación de guardado y redirección
+        alert('El horario se ha guardado correctamente');
+        window.location.href = 'index.html';
+    }
+
+    // Función para agregar una nueva entrada de actividad con hora seleccionada
+    function addNewActivity() {
+        const time = newTimeInput.value;
+        const activityText = newActivityInput.value;
+        if (time && activityText) {
+            addActivityInput(time, activityText); // Añadimos la entrada de actividad con hora y texto
+            newActivityInput.value = ''; // Limpiamos el campo de actividad después de agregar
+        }
+    }
+
+    // Inicializamos con el horario de 05:00 a 23:00
+    generateFullDaySchedule();
+
+    // Añadimos el evento para el botón de agregar actividad
+    addActivityButton.onclick = addNewActivity;
+</script>
+
+</body>
+</html>

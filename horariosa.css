@@ -1,0 +1,203 @@
+/* Estilo principal */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #3a8383;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilo del encabezado */
+.header {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: #105652;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    margin-bottom: 10px;
+
+}
+
+h1 {
+
+    margin: 0;
+    font-size: 2.5rem;
+    animation: fadeIn 1s ease-in-out;
+    margin-bottom: 30px;
+}
+form {
+  border-style: double;
+  padding: 15px;
+  color: white;
+}
+.back-to-activities{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, 'Times New Roman', Times, serif;
+    font-size: 1rem;
+   border-radius: 5px;
+    padding: 10px;
+    padding-left: 90px;
+    padding-right: 90px;
+    background-color: #333;
+    color: rgb(239, 239, 239);
+  
+}
+.add-activity-container button{
+    border-style: double;
+    border-width: 1rem;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #ffffff;
+    border-color: rgb(21, 88, 104);
+    font-size: 1.5rem;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+
+
+
+
+
+
+}
+.add-activity-container {
+    margin-top: 0.5rem;
+    border-style: double;
+    padding: 2px;
+    color: white;
+    padding-top: 10px;
+    
+
+}
+button {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: #430101;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+    margin-left:5px;
+    animation: bounce 0.5s ease-in-out;
+    display: block;
+    margin-top: 5px;
+   margin-bottom: 10px;
+}
+
+/* Botones sssssssiuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu */
+button[type="button"][onclick="addSchedule()"]{
+ align-items: center;
+    border-style: double;
+    border-width: 1rem;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #ffffff;
+    border-color: rgb(21, 88, 104);
+    font-size: 1.5rem;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+
+    animation: bounce 0.5s ease-in-out;
+    display: block;
+
+}
+
+button:hover {
+    background-color: #ffffff;
+    color: black;
+
+}
+
+/* Estilos para inputs */
+input[type="time"] {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #15417a7f;
+    color: white;
+    border-style: double ;
+    border-color: white;
+    padding: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+    width: 90px;
+    font-size: 1.2rem;
+}
+
+input[type="text"] {
+    background-color: rgb(18, 74, 72);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    width: 185px;
+    font-size: 1.2rem;
+  
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* Alinear actividades */
+.activity-entry {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+/* Centrado de botones */
+.add-activity-container,button {
+    text-align: center;
+    width: 95%;
+    max-width: 425px;
+}
+
+a {
+    font-size: 1.2rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    background-color: rgba(131, 244, 237, 0.501);
+    color: black;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 95px;
+    padding-left: 95px;
+text-align: center;
+
+}
+ p {
+    font-size: 1.2rem;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgba(255, 255, 255, 0.501);
+    color: black;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+text-align: center;
+}
+
+/* Estilo de animación de los botones */
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Adecuación a móviles */
+

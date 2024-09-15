@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="calendarios.css">
+</head>
+<body>
+
+<div class="calendar-container">
+    <div class="header">
+        <button id="prev-month" onclick="changeMonth(-1)" disabled>&lt;</button>
+        <h1 id="month-year"></h1>
+        <button id="next-month" onclick="changeMonth(1)">&gt;</button>
+    </div>
+    <table id="calendar"></table>
+</div>
+
+<!-- Sección de notas debajo del calendario -->
+<div class="notes-container">
+    <h2>Notas del Día</h2>
+    <div id="daily-notes-list"></div>
+</div>
+
+<!-- Sección para añadir una nota -->
+<div class="note-section">
+    <input type="text" id="daily-note-input" placeholder="Añadir Nota del Día">
+    <button onclick="promptForDay()">Add Note</button>
+</div>
+
+<script>
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+    const notes = JSON.parse(localStorage.getItem('notes')) || {};
+
+    function renderCalendar() {
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+        const calendar = document.getElementById('calendar');
+        let daysHTML = "<tr>";
+
+        const today = new Date().getDate();
+        const isCurrentMonth = currentYear === new Date().getFullYear() && currentMonth === new Date().getMonth();
+
+        // Nombres de los días
+        const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        dayNames.forEach(dayName => {
+            daysHTML += `<th class="day-name">${dayName}</th>`;
+        });
+        daysHTML += "</tr><tr>";
+
+        // Celdas vacías antes del primer día del mes
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            daysHTML += "<td></td>";
+        }
+
+        // Días del mes
+        for (let day = 1; day <= daysInMonth; day++) {
+            const noteKey = `${currentYear}-${currentMonth + 1}-${day}`;
+            const hasNote = notes[noteKey] ? true : false;
+            const isToday = isCurrentMonth && day === today;
+            const bgColor = hasNote ? "TAN" : isToday ? "CYAN" : "white";
+            
+            daysHTML += `<td style="background-color: ${bgColor};"><a href="activities_habits.html?day=${day}">${day}</a></td>`;
+            if ((firstDayOfMonth + day) % 7 === 0) {
+                daysHTML += "</tr><tr>";
+            }
+        }
+        daysHTML += "</tr>";
+        calendar.innerHTML = daysHTML;
+
+        document.getElementById('month-year').textContent = `${getMonthName(currentMonth)} ${currentYear}`;
+
+        document.getElementById('prev-month').disabled = (currentYear === new Date().getFullYear() && currentMonth === new Date().getMonth());
+        document.getElementById('next-month').disabled = false;
+
+        renderNotes(); // Renderizar las notas debajo del calendario
+    }
+
+    function getMonthName(month) {
+        return new Date(currentYear, month).toLocaleString('en-US', { month: 'long' });
+    }
+
+    function changeMonth(offset) {
+        currentMonth += offset;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    }
+
+    // Mostrar las notas debajo del calendario
+    function renderNotes() {
+        const dailyNotesList = document.getElementById('daily-notes-list');
+        dailyNotesList.innerHTML = '';
+
+        Object.keys(notes).forEach(noteKey => {
+            const [year, month, day] = noteKey.split('-');
+            if (parseInt(year) === currentYear && parseInt(month) === currentMonth + 1) {
+                const noteDiv = document.createElement('div');
+                noteDiv.classList.add('note-item');
+                noteDiv.innerHTML = `
+                    <p><strong>Nota del Día ${day}:</strong> ${notes[noteKey]}</p>
+                    <button onclick="expandNoteForm(${day})">Expandir</button>
+                    <div id="expand-${day}" class="expand-note-form" style="display:none;">
+                        <textarea id="extra-note-${day}" rows="3" placeholder="Añadir más..."></textarea>
+                        <button onclick="saveExtraNote(${day})">Guardar</button>
+                    </div>
+                `;
+                dailyNotesList.appendChild(noteDiv);
+            }
+        });
+    }
+
+    function expandNoteForm(day) {
+        const expandForm = document.getElementById(`expand-${day}`);
+        expandForm.style.display = expandForm.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function saveExtraNote(day) {
+        const extraNote = document.getElementById(`extra-note-${day}`).value;
+        const noteKey = `${currentYear}-${currentMonth + 1}-${day}`;
+        if (extraNote.trim()) {
+            notes[noteKey] = `${notes[noteKey]} - ${extraNote}`;
+            localStorage.setItem('notes', JSON.stringify(notes));
+            renderCalendar(); // Volver a renderizar el calendario y las notas
+        }
+    }
+
+    function promptForDay() {
+        const day = prompt("Enter the day you want to add a note to (1-31):");
+        const noteInput = document.getElementById('daily-note-input');
+        const noteText = noteInput.value;
+
+        if (day && noteText && day >= 1 && day <= new Date(currentYear, currentMonth + 1, 0).getDate()) {
+            const noteKey = `${currentYear}-${currentMonth + 1}-${day}`;
+            notes[noteKey] = noteText;
+            localStorage.setItem('notes', JSON.stringify(notes));
+            renderCalendar();
+            noteInput.value = ''; // Limpiar el campo después de añadir la nota
+        } else {
+            alert("Invalid day or note text.");
+        }
+    }
+
+    renderCalendar();
+</script>
+
+</body>
+
+</html>

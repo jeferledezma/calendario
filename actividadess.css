@@ -1,0 +1,345 @@
+
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #2a5458;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+
+
+}
+
+.header {
+    background-color: #239089;
+    color: white;
+    text-align: center;
+  padding: 1rem;
+    
+}
+
+#date-title {
+    font-size: 4rem;
+}
+
+.back-to-calendar {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: #0a2525;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+    padding: 0.8rem;
+padding-left: 6rem;
+padding-right: 6rem;
+border-radius: 5px;
+
+}
+
+.progress-container {
+    background-color: #b0ede8;
+    border-radius: 10px;
+    height: 49px;
+    width: 90%;
+    margin: 1rem ;
+    position: relative;
+    border-style: dotted;
+}
+
+.progress-bar {
+    background-color: #239089;
+    border-radius: 10px;
+    height: 100%;
+    width: 0;
+    transition: width 1s ease-in-out;
+}
+
+.add-activity {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.add-activity2 {
+    border-color:rgb(117, 240, 240) ;
+ 
+    padding:-10px;
+    margin: 2px;
+ border-width: 5px;
+border-style:double ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+}
+#time-input, #activity-input {
+    margin: 0.5rem;
+    padding:  0.5rem 4.5rem 0.5rem 4.5rem;
+    border-radius: 55px;
+    border: 1px solid #239089;
+}
+
+button {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: #239089;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #34839e;
+    height: 45px;
+    width: 115px;
+    
+}
+
+/* Activity List Styles */
+#activity-list {
+    
+    margin: 0 1rem;
+}
+
+.activity-container {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.5rem;
+    border-style: double;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.activity-container:nth-child(even) {
+    animation: slideIn 1s ease-in-out;
+}
+
+.checkbox {
+    margin-bottom: 0.5rem;
+    position: relative;
+    top: -1rem;
+}
+
+.activity-text {
+
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  
+}
+a { border-radius: 5px;
+    margin: 10px;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    background-color: rgb(108, 234, 94);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: none;
+}
+.note {
+    background-color: #aad4e2;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5rem;
+    color: #1a1919;
+    margin-bottom: 0.2rem;
+    border-radius: 5px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+h2{
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    padding: 10px 25px 10px 25px;
+    text-align: center;
+    font-family:   'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 2rem;
+    background-color: #000a09;
+}
+button {
+    margin: 0.2rem;
+}
+
+/* Mobile Styles (320px) */
+@media (max-width: 425px) {
+    .activity-container {
+        flex-direction: column;
+    }
+ .header {
+       font-size: 0.1rem;
+    }
+   
+    .activity-text {
+        text-align: center;
+    }
+
+    .checkbox {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    button {
+        margin: 0.2rem;
+    }
+}
+
+/* Laptop Styles (1024px) */
+@media (min-width: 1024px) {
+    .activity-container {
+        display: grid;
+        grid-template-columns: auto 1fr auto auto;
+        align-items: center;
+        gap: 1rem;
+        grid-template-areas: "checkbox activity-text buttons buttons"
+                             "checkbox note note note";
+    }
+
+    .checkbox {
+        grid-area: checkbox;
+        margin: 0;
+        align-self: center;
+    }
+
+    .activity-text {
+        grid-area: activity-text;
+        text-align: left;
+    }
+
+    .note {
+        grid-area: note;
+        text-align: left;
+    
+    }
+
+    .buttons {
+        grid-area: buttons;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .note-button, .delete-button {
+        width: 100%;
+        margin-top: 0.2rem;
+    }
+
+    .note-button {
+        margin-right: 0.5rem;
+    }
+
+    .delete-button {
+        margin-top: 0.2rem;
+    }
+}
+
+/* Animaciones para el título */
+@keyframes titleAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header h1 {
+    animation: titleAnimation 1s ease-out;
+}
+
+/* Animaciones para los botones */
+@keyframes buttonHover {
+    0% {
+        background-color: #239089;
+        transform: scale(1);
+    }
+    50% {
+        background-color: #1e7a74;
+        transform: scale(1.1);
+    }
+    100% {
+        background-color: #239089;
+        transform: scale(1);
+    }
+}
+
+button {
+    animation: buttonHover 0.5s ease-in-out;
+}
+
+button:hover {
+    animation: buttonHover 0.5s ease-in-out;
+}
+
+/* Animaciones para la barra de progreso */
+@keyframes progressBarAnimation {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.progress-bar {
+    animation: progressBarAnimation 1.5s ease-out;
+}
+
+/* Animaciones para los checkboxes */
+@keyframes checkboxAnimation {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.checkbox {
+    animation: checkboxAnimation 0.5s ease-out;
+}
+
+
+.activity-container {
+    animation: activityContainerAnimation 0.5s ease-out;
+}
+
+/* Estilo base para los checkboxes */
+input[type="checkbox"] {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #000000; /* Color de fondo predeterminado */
+    border: 2px solid #edeeee; /* Color de borde predeterminado */
+    border-radius: 4px; /* Bordes redondeados */
+}
+
+/* Estilo al pasar el mouse por encima */
+input[type="checkbox"]:hover {
+    width: 45px;
+    height: 45px;
+    background-color: #000a09; /* Color de fondo al pasar el mouse */
+    border-color: #010e0d; /* Color de borde al pasar el mouse */
+}
+
+/* Estilo para los checkboxes seleccionados */
+input[type="checkbox"]:checked {
+    background-color: #ff0000; /* Color de fondo cuando está marcado */
+    border-color: #060606; /* Color de borde cuando está marcado */
+}
+
+/* Estilo al pasar el mouse por encima de los checkboxes seleccionados */
+input[type="checkbox"]:checked:hover {
+    width: 45px;
+    height: 45px;
+    background-color: #000000; /* Color de fondo al pasar el mouse sobre un checkbox marcado */
+    border-color: #070707; /* Color de borde al pasar el mouse sobre un checkbox marcado */
+}

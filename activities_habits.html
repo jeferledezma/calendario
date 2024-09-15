@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividades y Hábitos</title>
+    <link rel="stylesheet" href="actividadess.css">
+</head>
+<body>
+
+<div class="header">
+    <h1 id="date-title">HÁBITOS - ACTIVIDADES</h1>
+    <a href="index.html" class="back-to-calendar">Volver al calendario</a>
+</div>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+</div>
+
+<div class="add-activity">
+    <a id="add-schedule-btn" class="button">Añadir Todo un Dia de Actividades</a>
+   
+
+
+<div id="activity-list"></div>
+
+
+<div class="add-activity2">
+<h2>Agrega una nueva actividad o habito</h2>
+<k>Selecciona la Hora</k>
+<input type="time" id="time-input">
+<k>Nombra la Actividad</k>
+<input type="text" id="activity-input" placeholder="Añadir actividad o hábito">
+<button onclick="addActivity()">Añadir Actividad</button>
+
+
+</div>
+</div>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const day = parseInt(urlParams.get('day'));
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+
+    const dayKey = `${currentYear}-${currentMonth}-${day}`;
+
+    const dayOfWeekEnglish = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date(currentYear, currentMonth - 1, day));
+    const dayOfWeekSpanish = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(new Date(currentYear, currentMonth - 1, day));
+    document.getElementById('date-title').innerHTML = `Day: ${dayOfWeekEnglish} (${dayOfWeekSpanish}) - ${day}/${currentMonth}/${currentYear}`;
+
+    document.getElementById('add-schedule-btn').href = `horario.html?day=${dayKey}`;
+
+    let activities = JSON.parse(localStorage.getItem(dayKey)) || [];
+
+    function addActivity() {
+        const time = document.getElementById('time-input').value;
+        const activityText = document.getElementById('activity-input').value;
+
+        if (time && activityText) {
+            activities.push({ time, activityText, note: '', completed: false });
+            saveActivities();
+            renderActivities();
+        }
+    }
+
+    function toggleActivity(index) {
+        activities[index].completed = !activities[index].completed;
+        saveActivities();
+        renderActivities();
+    }
+
+    function removeActivity(index) {
+        activities.splice(index, 1);
+        saveActivities();
+        renderActivities();
+    }
+
+    function addNoteToActivity(index) {
+        const note = prompt("Introduce una nota para esta actividad:");
+        if (note !== null) {
+            activities[index].note = note;
+            saveActivities();
+            renderActivities();
+        }
+    }
+
+    function saveActivities() {
+        localStorage.setItem(dayKey, JSON.stringify(activities));
+    }
+
+    function renderActivities() {
+        const activityList = document.getElementById('activity-list');
+        activityList.innerHTML = '';
+
+        activities.sort((a, b) => a.time.localeCompare(b.time)).forEach((activity, index) => {
+            const activityContainer = document.createElement('div');
+            activityContainer.className = 'activity-container';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = activity.completed;
+            checkbox.onchange = () => toggleActivity(index);
+
+            const activityText = document.createElement('span');
+            activityText.textContent = `${activity.time} ${activity.activityText}`;
+
+            const note = document.createElement('span');
+            note.className = 'note';
+            note.textContent = activity.note;
+
+            const noteButton = document.createElement('button');
+            noteButton.textContent = 'Añadir Nota';
+            noteButton.onclick = () => addNoteToActivity(index);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Eliminar';
+            deleteButton.onclick = () => removeActivity(index);
+
+            activityContainer.appendChild(checkbox);
+            activityContainer.appendChild(activityText);
+            activityContainer.appendChild(note);
+            activityContainer.appendChild(noteButton);
+            activityContainer.appendChild(deleteButton);
+
+            activityList.appendChild(activityContainer);
+        });
+
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const completedActivities = activities.filter(activity => activity.completed).length;
+        const totalActivities = activities.length;
+        const progressPercentage = totalActivities ? (completedActivities / totalActivities) * 100 : 0;
+        document.getElementById('progress-bar').style.width = progressPercentage + '%';
+    }
+
+    renderActivities();
+</script>
+
+</body>
+</html>

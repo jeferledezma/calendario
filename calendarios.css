@@ -1,0 +1,341 @@
+/* Notas del día */
+.notes-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+    color: white;
+}
+
+.note-entry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #06645d;
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+}
+
+.note-entry .note-text {
+    flex: 1;
+    text-align: center;
+    color: white;
+}
+
+.note-entry .expand-btn {
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: #107270;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.note-entry .expand-btn:hover {
+    background-color: #4beecd;
+}
+
+/* Estilo para el campo de texto al expandir */
+.expandable-note {
+    display: none;
+    width: 90%;
+    background-color: #487e7b;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.expandable-note textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    color: #000;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Mostrar campo expandido */
+.note-entry.expanded + .expandable-note {
+    display: block;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a4a47;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    font-size: 2rem;
+    color: #fff;
+    animation: title-animation 1s ease-in-out;
+    text-align: center;
+}
+
+.header button {
+    margin: 0 15px;
+    padding: 10px 20px;
+    border-radius: 50%;
+    border-style: double;
+border-color: white;
+    background-color: #06645d;
+    color: #fff;
+   
+    cursor: pointer;
+    animation: arrow-animation 0.5s ease-in-out;
+}
+
+.header button:hover {
+    background-color: #b5ecd0;
+    color: #06645d;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 20px 0;
+    width: 100%;
+    table-layout: fixed; /* Esto garantiza que todas las celdas tengan el mismo tamaño */
+}
+
+table td, table th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    vertical-align: top;
+}
+
+table th {
+    font-family:fantasy;
+    background-color: #63b7a37d;
+    color: #2d433c; 
+    font-size: 0.7rem;
+   
+  
+}
+
+table td {
+    background-color: #00000074;
+    color: #fff;
+    position: relative;
+}
+
+table td a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+table td .daily-note {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #487e7b;
+}
+
+table td .delete {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgb(0, 0, 0);
+    color: rgb(11, 11, 11);
+    border: none;
+    cursor: pointer;
+}   
+
+.current-day {
+    background-color: #2020f421;
+    color: white;
+}
+
+.note-day {
+    background-color: #487e7b;
+    color: white;
+}
+
+.note-section {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.note-section input[type="text"] {
+    padding: 10px 35px 10px 35px;
+    margin-right: 10px;
+    border: #06645d;
+    border-radius: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.note-section button {
+    padding: 10px 40px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border: double;
+    border-radius: 5px;
+    background-color: #107270;
+    color: #fff;
+    cursor: pointer;
+    animation: note-btn-animation 0.3s ease-in-out;
+}
+
+.note-section button:hover {
+    background-color: #4beecd;
+}
+
+/* Animations */
+@keyframes title-animation {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes arrow-animation {
+    0% {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes note-btn-animation {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+/* Estilos para la sección de notas debajo del calendario */
+.notes-container {
+    margin-top: 20px;
+    text-align:left;
+    border-style: double;
+    border-color: white;
+    border-radius: 5px;
+}
+
+.notes-container h2 {
+    
+    font-size: 24px;
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+strong {
+   color: white;
+}
+/* Estilos para las notas individuales */
+.note-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #3b99a3; /* Color de fondo ten */
+    padding: 10px;
+    margin: 10px auto;
+    width: 90%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el texto de las notas */
+.note-item p {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    margin-right: 5px;
+}
+
+/* Botón expandir al lado de las notas */
+.note-item button {
+
+    background-color: #0984e3;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.note-item button:hover {
+    background-color: #74b9ff;
+}
+
+/* Estilos para el campo expandido de las notas */
+.expand-note-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.expand-note-form textarea {
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #00cec9;
+    outline: none;
+    resize: none;
+}
+
+.expand-note-form button {
+    background-color: #008355;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.expand-note-form button:hover {
+    background-color: #a29bfe;
+}
+
