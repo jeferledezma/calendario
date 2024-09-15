@@ -119,6 +119,7 @@ input[type="time"] {
     border-style: double ;
     border-color: white;
     padding: 5px;
+padding-right: 10px;
     margin-right: 5px;
     border-radius: 5px;
     width: 90px;
@@ -159,8 +160,8 @@ a {
     border-radius: 5px;
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-right: 95px;
-    padding-left: 95px;
+    padding-right: 56px;
+    padding-left: 56px;
 text-align: center;
 
 }
