@@ -28,9 +28,9 @@ body {
     background-color: #0a2525;
     font-family: Georgia, 'Times New Roman', Times, serif;
 font-size:0.8rem;
-    padding: 0.8rem;
-padding-left: 6rem;
-padding-right: 6rem;
+    padding: 1rem;
+padding-left: 56px;
+padding-right: 56px;
 border-radius: 5px;
 
 }
