@@ -118,12 +118,12 @@ input[type="time"] {
     color: white;
     border-style: double ;
     border-color: white;
-    padding: 5px;
-padding-right: 10px;
+    padding: 3px;
+
     margin-right: 5px;
     border-radius: 5px;
     width: 90px;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 input[type="text"] {
