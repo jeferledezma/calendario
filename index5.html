@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altitude | Cotizador Web Inteligente</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #564FC1;
+            --secondary: #1A1A2E;
+            --accent: #00D1B2;
+            --light: #F0F0F0;
+            --dark: #16213E;
+            --text: #333333;
+            --text-light: #7A7A7A;
+            --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+            --glass: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --border: 1px solid rgba(255, 255, 255, 0.18);
+            --transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--secondary);
+            color: var(--light);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 209, 178, 0.1) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: var(--glass);
+            border-bottom: var(--border);
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            color: var(--primary);
+            font-size: 32px;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 150px 0 80px;
+            position: relative;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--light);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+            }
+        }
+
+        /* Form Container */
+        .form-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            border: var(--border);
+            max-width: 800px;
+            margin: 0 auto;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(108, 99, 255, 0.1),
+                rgba(0, 209, 178, 0.1)
+            );
+            transform: rotate(30deg);
+            z-index: -1;
+            animation: shine 8s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: rotate(30deg) translate(-30%, -30%);
+            }
+            100% {
+                transform: rotate(30deg) translate(30%, 30%);
+            }
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .form-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .form-title p {
+            color: var(--text-light);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: var(--light);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group label .recommended {
+            color: var(--accent);
+            font-size: 12px;
+            margin-left: 8px;
+            font-weight: 400;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 16px;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            position: relative;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .radio-option input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .radio-option label {
+            display: block;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .radio-option label:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .radio-option input:checked + label {
+            background: var(--primary-dark);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        /* Conditional Groups */
+        .conditional-group {
+            margin-top: 15px;
+            padding-left: 20px;
+            border-left: 2px solid var(--primary);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+            z-index: -1;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .submit-btn:hover::before {
+            opacity: 1;
+        }
+
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Summary Section */
+        .summary {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            border: var(--border);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .summary.visible {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .summary h3 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary h3 i {
+            font-size: 24px;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-name {
+            font-weight: 500;
+            color: var(--light);
+        }
+
+        .feature-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            background: var(--glass);
+            border: var(--border);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            animation: floatElement 8s infinite ease-in-out;
+            z-index: -1;
+        }
+
+        @keyframes floatElement {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(2deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .form-title h2 {
+                font-size: 28px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .radio-option {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main {
+                padding: 120px 0 50px;
+            }
+
+            .form-title h2 {
+                font-size: 24px;
+            }
+
+            .form-group label {
+                font-size: 14px;
+            }
+
+            .form-control, .radio-option label {
+                padding: 12px 15px;
+            }
+
+            .submit-btn {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-mountain logo-icon"></i>
+                ALTITUDE
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Floating Particles Background -->
+        <div class="particles" id="particles"></div>
+
+        <!-- Floating Elements -->
+        <div class="floating-element" style="width: 100px; height: 100px; top: 15%; left: 5%; animation-delay: 0s;"></div>
+        <div class="floating-element" style="width: 150px; height: 150px; top: 60%; right: 5%; animation-delay: 1s;"></div>
+        <div class="floating-element" style="width: 80px; height: 80px; bottom: 10%; left: 20%; animation-delay: 2s;"></div>
+
+        <!-- Form Container -->
+        <div class="container">
+            <div class="form-container">
+                <div class="form-title">
+                    <h2>Cotizador Web Inteligente</h2>
+                    <p>Completa este formulario para recibir una cotización personalizada de tu proyecto web con Altitude</p>
+                </div>
+
+                <form id="quoteForm">
+                    <!-- Personal Information -->
+                    <div class="form-group">
+                        <label for="name">Nombre completo</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+
+                    <!-- Project Features -->
+                    <div class="form-group">
+                        <label>¿Tu sitio web necesita un sistema de control de flujo de caja (ingresos/egresos)?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="cashflow-yes" name="cashflow" value="Sí" required>
+                                <label for="cashflow-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="cashflow-no" name="cashflow" value="No" checked>
+                                <label for="cashflow-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Requieres mostrar un catálogo de productos/servicios?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="catalog-yes" name="catalog" value="Sí" required>
+                                <label for="catalog-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="catalog-no" name="catalog" value="No" checked>
+                                <label for="catalog-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Ya cuentas con un sistema de inventario?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="inventory-yes" name="inventory" value="Sí" required>
+                                <label for="inventory-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="inventory-no" name="inventory" value="No" checked>
+                                <label for="inventory-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="inventory-module-group" class="form-group conditional-group hidden">
+                        <label>¿Deseas incluir un módulo de inventario para tu negocio?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="inventory-module-yes" name="inventory-module" value="Sí">
+                                <label for="inventory-module-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="inventory-module-no" name="inventory-module" value="No" checked>
+                                <label for="inventory-module-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Necesitas integración con redes sociales o APIs externas?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="api-yes" name="api" value="Sí" required>
+                                <label for="api-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="api-no" name="api" value="No" checked>
+                                <label for="api-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Quieres que el sitio sea multidioma?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="multilang-yes" name="multilang" value="Sí" required>
+                                <label for="multilang-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="multilang-no" name="multilang" value="No" checked>
+                                <label for="multilang-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Prefieres diseño responsivo (adaptable a móviles)? <span class="recommended">Recomendado</span></label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="responsive-yes" name="responsive" value="Sí" checked required>
+                                <label for="responsive-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="responsive-no" name="responsive" value="No">
+                                <label for="responsive-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Tu sitio requiere autenticación de usuarios (ej: login/registro)?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="auth-yes" name="auth" value="Sí" required>
+                                <label for="auth-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="auth-no" name="auth" value="No" checked>
+                                <label for="auth-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Tienes contenido (textos, imágenes, videos) listo para el sitio?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="content-yes" name="content" value="Sí" required>
+                                <label for="content-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="content-no" name="content" value="No" checked>
+                                <label for="content-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="content-help-group" class="form-group conditional-group hidden">
+                        <label>¿Necesitas ayuda con la creación de contenido?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="content-help-yes" name="content-help" value="Sí">
+                                <label for="content-help-yes">Sí</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="content-help-no" name="content-help" value="No" checked>
+                                <label for="content-help-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Describe brevemente tu proyecto y necesidades específicas</label>
+                        <textarea id="description" class="form-control"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Generar Cotización
+                    </button>
+                </form>
+
+                <!-- Summary Section -->
+                <div id="summary" class="summary">
+                    <h3><i class="fas fa-file-alt"></i> Resumen de tu Cotización</h3>
+                    <ul class="features-list" id="featuresList">
+                        <!-- Aquí se generará el resumen -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Create floating particles
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 5 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particlesContainer.appendChild(particle);
+            }
+
+            // Conditional fields
+            const inventoryRadios = document.querySelectorAll('input[name="inventory"]');
+            const inventoryModuleGroup = document.getElementById('inventory-module-group');
+            
+            inventoryRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'No' && this.checked) {
+                        inventoryModuleGroup.classList.remove('hidden');
+                    } else {
+                        inventoryModuleGroup.classList.add('hidden');
+                        document.getElementById('inventory-module-no').checked = true;
+                    }
+                });
+            });
+
+            const contentRadios = document.querySelectorAll('input[name="content"]');
+            const contentHelpGroup = document.getElementById('content-help-group');
+            
+            contentRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'No' && this.checked) {
+                        contentHelpGroup.classList.remove('hidden');
+                    } else {
+                        contentHelpGroup.classList.add('hidden');
+                        document.getElementById('content-help-no').checked = true;
+                    }
+                });
+            });
+
+            // Form submission
+            const quoteForm = document.getElementById('quoteForm');
+            const summary = document.getElementById('summary');
+            const featuresList = document.getElementById('featuresList');
+            
+            quoteForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const cashflow = document.querySelector('input[name="cashflow"]:checked').value;
+                const catalog = document.querySelector('input[name="catalog"]:checked').value;
+                const inventory = document.querySelector('input[name="inventory"]:checked').value;
+                const inventoryModule = inventory === 'No' ? document.querySelector('input[name="inventory-module"]:checked').value : 'No aplica';
+                const api = document.querySelector('input[name="api"]:checked').value;
+                const multilang = document.querySelector('input[name="multilang"]:checked').value;
+                const responsive = document.querySelector('input[name="responsive"]:checked').value;
+                const auth = document.querySelector('input[name="auth"]:checked').value;
+                const content = document.querySelector('input[name="content"]:checked').value;
+                const contentHelp = content === 'No' ? document.querySelector('input[name="content-help"]:checked').value : 'No aplica';
+                const description = document.getElementById('description').value;
+                
+                // Generate summary
+                featuresList.innerHTML = '';
+                
+                addFeatureItem('Nombre', name);
+                addFeatureItem('Email', email);
+                addFeatureItem('Control de flujo de caja', cashflow);
+                addFeatureItem('Catálogo de productos/servicios', catalog);
+                addFeatureItem('Sistema de inventario existente', inventory);
+                
+                if (inventory === 'No') {
+                    addFeatureItem('Módulo de inventario deseado', inventoryModule);
+                }
+                
+                addFeatureItem('Integración con APIs/redes sociales', api);
+                addFeatureItem('Sitio multidioma', multilang);
+                addFeatureItem('Diseño responsivo', responsive);
+                addFeatureItem('Autenticación de usuarios', auth);
+                addFeatureItem('Contenido listo', content);
+                
+                if (content === 'No') {
+                    addFeatureItem('Ayuda con creación de contenido', contentHelp);
+                }
+                
+                if (description) {
+                    addFeatureItem('Descripción del proyecto', description);
+                }
+                
+                // Show summary with animation
+                summary.classList.add('visible');
+                
+                // Scroll to summary
+                summary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Send data via WhatsApp
+                sendWhatsApp(name, email, cashflow, catalog, inventory, inventoryModule, api, multilang, responsive, auth, content, contentHelp, description);
+            });
+            
+            function addFeatureItem(name, value) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="feature-name">${name}:</span>
+                    <span class="feature-value">${value}</span>
+                `;
+                featuresList.appendChild(li);
+            }
+            
+            function sendWhatsApp(name, email, cashflow, catalog, inventory, inventoryModule, api, multilang, responsive, auth, content, contentHelp, description) {
+                let message = `*Nueva cotización de Altitude*\n\n`;
+                message += `*👤 Cliente:* ${name}\n`;
+                message += `*📧 Email:* ${email}\n\n`;
+                message += `*📌 Detalles del proyecto:*\n`;
+                message += `• Control de flujo de caja: ${cashflow}\n`;
+                message += `• Catálogo de productos/servicios: ${catalog}\n`;
+                message += `• Sistema de inventario existente: ${inventory}\n`;
+                
+                if (inventory === 'No') {
+                    message += `• Módulo de inventario deseado: ${inventoryModule}\n`;
+                }
+                
+                message += `• Integración con APIs/redes sociales: ${api}\n`;
+                message += `• Sitio multidioma: ${multilang}\n`;
+                message += `• Diseño responsivo: ${responsive}\n`;
+                message += `• Autenticación de usuarios: ${auth}\n`;
+                message += `• Contenido listo: ${content}\n`;
+                
+                if (content === 'No') {
+                    message += `• Ayuda con creación de contenido: ${contentHelp}\n`;
+                }
+                
+                if (description) {
+                    message += `\n*📝 Descripción adicional:*\n${description}\n`;
+                }
+                
+                const whatsappUrl = `https://wa.me/59178805220?text=${encodeURIComponent(message)}`;
+                setTimeout(() => {
+                    window.open(whatsappUrl, '_blank');
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
